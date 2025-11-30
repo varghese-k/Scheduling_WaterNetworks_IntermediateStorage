@@ -1,0 +1,199 @@
+[TITLE]
+Scenario: Base 								
+Date: 24-11-2014 10:34:55:AM Dhana 								
+
+[JUNCTIONS]
+;ID              	Elev        	Demand      	Pattern         
+ 19              	0           	0           	                	;					
+ 1               	0           	0           	                	;					
+ 2               	0           	0           	                	;					
+ 3               	0           	0           	                	;					
+ 4               	0           	0           	                	;					
+ 5               	0           	0           	                	;					
+ 6               	0           	0           	                	;					
+ 7               	0           	0           	                	;					
+ 8               	0           	0           	                	;					
+ 9               	0           	0           	                	;					
+ 10              	0           	0           	                	;					
+ 0               	0           	0           	                	;					
+
+[RESERVOIRS]
+;ID              	Head        	Pattern         
+ R-1             	159.55      	                	;					
+
+[TANKS]
+;ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve        	Overflow
+ T1              	184.0166    	0           	0           	20          	25          	0           	                	;
+ T2              	179.1314    	0           	0           	20          	25          	0           	                	;
+ T3              	180.4928    	0           	0           	20          	25          	0           	                	;
+ T4              	181.2388    	0           	0           	20          	25          	0           	                	;
+ T5              	173.6073    	0           	0           	20          	25          	0           	                	;
+ T6              	180.2255    	0           	0           	20          	25          	0           	                	;
+ T7              	176.5724    	0           	0           	20          	25          	0           	                	;
+ T8              	176.0132    	0           	0           	20          	25          	0           	                	;
+
+[PIPES]
+;ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status
+ 2               	1               	7               	906         	200         	100         	0           	Open  	;
+ 19              	19              	1               	732         	300         	100         	0           	Open  	;
+ 3               	1               	2               	906         	200         	120         	0           	Open  	;
+ 4               	2               	3               	117         	200         	120         	0           	Open  	;
+ 6               	3               	4               	127         	200         	120         	0           	Open  	;
+ 7               	4               	5               	127         	200         	120         	0           	Open  	;
+ 101             	5               	T1              	2106        	100         	120         	0           	Open  	;
+ 102             	5               	T2              	1179        	200         	120         	0           	Open  	;
+ 5               	2               	6               	612         	200         	120         	0           	Open  	;
+ 103             	6               	T3              	244         	90          	130         	0           	Open  	;
+ 104             	6               	T4              	68          	200         	120         	0           	Open  	;
+ 12              	7               	8               	1329        	200         	120         	0           	Open  	;
+ 108             	8               	T8              	31          	200         	120         	0           	Open  	;
+ 14              	8               	9               	776         	200         	120         	0           	Open  	;
+ 107             	9               	T7              	1386        	200         	130         	0           	Open  	;
+ 16              	9               	10              	31          	200         	120         	0           	Open  	;
+ 106             	10              	T6              	176         	450         	130         	0           	Open  	;
+ 105             	10              	T5              	1301        	200         	120         	0           	Open  	;
+ 1               	0               	19              	732         	350         	100         	0           	Open  	;
+
+[PUMPS]
+;ID              	Node1           	Node2           	Parameters
+ P1              	R-1             	0               	HEAD 1	;				
+
+[VALVES]
+;ID              	Node1           	Node2           	Diameter    	Type	Setting     	MinorLoss   
+
+[TAGS]
+
+[DEMANDS]
+;Junction        	Demand      	Pattern         	Category
+
+[STATUS]
+;ID              	Status/Setting
+
+[PATTERNS]
+;ID              	Multipliers
+
+[CURVES]
+;ID              	X-Value     	Y-Value
+;PUMP: PUMP: PUMP: 								
+ 1               	175         	120         
+;PUMP: EFFICIENCY: EFFICIENCY: 								
+ 2               	20          	16.446      
+ 2               	60          	42.458      
+ 2               	100         	63.03       
+ 2               	140         	76.242      
+ 2               	180         	80.174      
+ 2               	220         	72.906      
+ 2               	260         	52.518      
+ 2               	300         	17.09       
+
+[CONTROLS]
+								
+								
+
+[RULES]
+								
+								
+
+[ENERGY]
+ Global Efficiency  	75
+ Global Price       	1
+ Demand Charge      	0
+ Pump 	P1              	Efficiency	2
+ Pump 	P1              	Price     	1
+
+[EMITTERS]
+;Junction        	Coefficient
+
+[QUALITY]
+;Node            	InitQual
+
+[SOURCES]
+;Node            	Type        	Quality     	Pattern
+
+[REACTIONS]
+;Type     	Pipe/Tank       	Coefficient
+
+
+[REACTIONS]
+ Order Bulk            	1
+ Order Tank            	1
+ Order Wall            	1
+ Global Bulk           	0
+ Global Wall           	0
+ Limiting Potential    	0
+ Roughness Correlation 	0
+
+[MIXING]
+;Tank            	Model
+
+[TIMES]
+ Duration           	0:00 
+ Hydraulic Timestep 	0:05 
+ Quality Timestep   	0:00 
+ Pattern Timestep   	0:05 
+ Pattern Start      	0:00 
+ Report Timestep    	0:05 
+ Report Start       	0:00 
+ Start ClockTime    	12:00 AM
+ Statistic          	NONE
+
+[REPORT]
+ Status             	Full
+ Summary            	No
+ Page               	0
+
+[OPTIONS]
+ Units              	LPS
+ Headloss           	H-W
+ Specific Gravity   	0.998
+ Viscosity          	1
+ Trials             	40
+ Accuracy           	0.001
+ CHECKFREQ          	2
+ MAXCHECK           	10
+ DAMPLIMIT          	0
+ Unbalanced         	Continue 10
+ Pattern            	1
+ Demand Multiplier  	1
+ Emitter Exponent   	0.5
+ Quality            	NONE mg/L
+ Diffusivity        	1
+ Tolerance          	0.01
+
+[COORDINATES]
+;Node            	X-Coord           	Y-Coord
+19              	3690.870          	5351.260          
+1               	3910.610          	5177.780          
+2               	3737.130          	5081.400          
+3               	3590.640          	5008.160          
+4               	3444.150          	4961.900          
+5               	3212.840          	4919.490          
+6               	3887.480          	4985.030          
+7               	4033.970          	5312.710          
+8               	4153.480          	5312.710          
+9               	4346.230          	5162.360          
+10              	4288.400          	4919.490          
+0               	3444.150          	5439.920          
+R-1             	2935.280          	5428.360          
+T1              	3001.660          	4765.290          
+T2              	3097.190          	4541.700          
+T3              	3313.080          	4337.380          
+T4              	3552.090          	4198.600          
+T5              	4357.790          	4661.200          
+T6              	4542.840          	4803.840          
+T7              	4662.340          	4988.880          
+T8              	4751.010          	5185.490          
+
+[VERTICES]
+;Link            	X-Coord           	Y-Coord
+
+[LABELS]
+;X-Coord             Y-Coord             Label & Anchor Node
+
+[BACKDROP]
+  DIMENSIONS  	3430.890          	3379.880          	7846.390          	5646.650          
+ UNITS          	None
+ FILE           	
+ OFFSET         	0.00            	0.00            
+
+[END]
