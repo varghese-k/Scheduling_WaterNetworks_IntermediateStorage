@@ -1,5 +1,6 @@
 %--------------------------------------------------------------------------
-% Program to create a schedule for the Arcot network
+% Program to create a schedule for the water networks with intermediate
+% storage
 %--------------------------------------------------------------------------
 % Clear workspace
 home; clear; ...clear import; 
