@@ -224,9 +224,11 @@ for m = 1:numStates
     prob.Constraints.("States_active_time" + m) = sum(y(m,:)) == nSlices(m);
 end
 
-sol = prob.solve();
+[sol,fval,exitflag] = prob.solve();
 
-
+if exitflag<=0
+    return;
+end
 
 %% PLot tank volumes
 
