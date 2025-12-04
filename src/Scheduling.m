@@ -89,9 +89,7 @@ end
 calllib('epanet2','ENclose');
 unloadlibrary('epanet2');
 
-%% ------------------------------------------------------------------------
-                        % Linear Program to find optimal states
-%  ------------------------------------------------------------------------
+%% 2 Linear Program to find optimal states
 
 Aeq = [Q(1:nTanks,1:256)]*3600; % Convert flow rates from L/s to L/h
 C = [Q(nTanks+3,1:256)];
@@ -100,14 +98,8 @@ beq = 10^6.*[.63; .77; 1; 1.3; .61; 3.08; 1.01; .72]; % Cumulative demand in L
 
 [x,f,exitFlag] = linprog(C',[],[],[Aeq;ones(1,256)],[beq;24],zeros(size(Aeq,2),1),24*ones(size(Aeq,2),1));
 
-% t = ones(256,1);
-% T = t'*x; % Total pumping time
 
-
-%% ------------------------------------------------------------------------
-                        % Integer program to find schedule
-%  ------------------------------------------------------------------------
-
+%%  3 Integer program to find schedule
 
 prob = optimproblem; 
 
@@ -141,8 +133,6 @@ end
 % total number of slices across all states
 totalSlices = sum(nSlices); % This + 1 give  the number of event points in the day. 
 
-% Define integer program 
-
 % Volume of water in each tank at each time point (upper and lower bounds
 % are 10% and 90% of tank capacity)
 V = optimvar("V",nTanks, totalSlices,Type="continuous",LowerBound=repmat(Capacity,1,totalSlices)*0.1,UpperBound=repmat(Capacity,1,totalSlices)*0.9);
@@ -158,10 +148,10 @@ Tvals = optimvar("Tvals",1, totalSlices, Type="continuous",LowerBound=0,UpperBou
 % daily demand)
 D = optimvar('D', 1,  totalSlices, Type="continuous", LowerBound=0);  % interpolation weights
 
-%%%%% The follwoing lines describes the constraints to define a
-%%%%% piecewise-linear interpolation--required because the event points in
-%%%%% the schedule do not necessarily coincide with the hours of the day,
-%%%%% for which the demands are availble. 
+% The follwoing lines describes the constraints to define a
+% piecewise-linear interpolation--required because the event points in
+% the schedule do not necessarily coincide with the hours of the day,
+% for which the demands are availble. 
 
 % Binary selector z(i,k): interval m active for time slot j 
 z = optimvar('z', length(hours_demand), totalSlices, 'Type','integer','LowerBound',0,'UpperBound',1);
@@ -204,6 +194,7 @@ end
 
 prob.Constraints.interval = intervalConstr;
 
+% Remaining constraints
 row = 1;
 for j = 1:totalSlices
     prob.Constraints.("single_state" + j) = sum(y(:,j)) == 1;
@@ -231,7 +222,7 @@ if exitflag<=0
     return;
 end
 
-%% PLot tank volumes
+%% 4 PLot tank volumes
 
 % Extract and plot the solution results
 V_solution = sol.V;
@@ -269,7 +260,7 @@ sgtitle('Tank volumes over the scheduling horizon (y-axis limits are the capacit
 
 saveas(f,fullfile(outputDir,'TankVolumes.fig'));
 
-%% Print schedule as a chart
+%% 5 Print schedule as a chart
 
 % Active state per interval
 [~, activeState] = max(yvals_solution, [], 1);
@@ -294,9 +285,8 @@ f = figure(2); hold on;
 % Colors for states
 cmap = lines(numStates);
 cmap = cmap+(1-cmap)*0.5;
-% -----------------------------------------------------------------------
-% 1) DRAW COLORED CELLS INSIDE GRID FOR EACH TANK
-% -----------------------------------------------------------------------
+
+% DRAW COLORED CELLS INSIDE GRID FOR EACH TANK
 for j = 1:totalSlices
     s = activeState(j);
     col = cmap(s,:);
@@ -314,9 +304,7 @@ end
 
     
 
-% -----------------------------------------------------------------------
-% 2) ADD STATE LABELS INSIDE THEIR OWN TOP ROW CELL
-% -----------------------------------------------------------------------
+% ADD STATE LABELS INSIDE THEIR OWN TOP ROW CELL
 stateRowY = nTanks;   % state labels are ABOVE tank 1 row
 
 for j = 1:totalSlices
@@ -333,9 +321,7 @@ end
 
 
 
-% -----------------------------------------------------------------------
-% 3) ADD TANK LABELS INSIDE FIRST COLUMN
-% -----------------------------------------------------------------------
+% ADD TANK LABELS INSIDE FIRST COLUMN
 firstColWidth = dt(1);
 
 % Add color for the top left cell
@@ -352,9 +338,7 @@ for t = 1:nTanks
         'FontWeight','bold');
 end
      
-% -----------------------------------------------------------------------
-% 4) ADD GRID LINES AROUND *ALL* CELLS (INCLUDING STATE ROW)
-% -----------------------------------------------------------------------
+% ADD GRID LINES AROUND ALL CELLS
 % Horizontal grid lines
 for r = 0:(nTanks+1)   % +1 for state row
     line([-2.5*firstColWidth totalWidth], [r r], 'Color','k', 'LineWidth',1.2);
@@ -369,9 +353,7 @@ line([totalWidth totalWidth], [0 nTanks+1], 'Color','k', 'LineWidth',1.2);
 
 line([-2.5*firstColWidth -2.5*firstColWidth], [0 nTanks+1], 'Color','k', 'LineWidth',1.2);
 
-% -----------------------------------------------------------------------
 % Axis adjustments
-% -----------------------------------------------------------------------
 xlim([-2.5*firstColWidth totalWidth]);
 ylim([0 nTanks+1]);
 
@@ -389,7 +371,7 @@ hold off
 saveas(f,fullfile(outputDir,'GanttChart.fig'));
 
 
-%% Write results to an xlsx file
+%% 6 Write results to an xlsx file
 
 % Statedata
 tankLabels = strcat("Tank ", string(1:nTanks), " (L/h)" )';
