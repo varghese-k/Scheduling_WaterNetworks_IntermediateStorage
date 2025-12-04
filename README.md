@@ -12,4 +12,4 @@
 + The folder `src` has the script to run the optimizer: `Scheduling.m`
     + The first section invokes the hydraulic solver to estimate the flow rates under different valve settings. Please read the note before the definition of `pipeIndices` if using a different network. EPANET works a little counterintuitively on pipe indexing. 
     + The second section formulates and solves a linear program to identify a set of efficeint states 
-    + The third section formulates and solves an integer linear program to identify the optimal sequence of states which ensures that the tank levels are within the allowable minimum and maximum values
+    + The third section formulates and solves an integer linear program to identify a sequence of states which ensures that the tank levels are within the allowable minimum and maximum values
